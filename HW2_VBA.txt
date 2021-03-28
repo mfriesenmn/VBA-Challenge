@@ -1,0 +1,71 @@
+Sub Run()
+
+Dim rows As Double
+rows = 2
+Dim brands As Integer
+brands = 2
+Dim company As String
+company = Cells(2, 1).Value
+Dim count As Integer
+count = 1
+Dim opening As Double
+opening = Cells(2, 3)
+Dim volume As Double
+volume = 0
+
+' Set the Label Row
+Cells(1, 10).Value = "Brand"
+Cells(1, 11).Value = "Entries"
+Cells(1, 12).Value = "Open"
+Cells(1, 13).Value = "Close"
+Cells(1, 14).Value = "Change Value"
+Cells(1, 15).Value = "%Change"
+Cells(1, 16).Value = "Volume"
+
+While Cells(rows, 1).Value <> ""
+    rows = rows + 1
+    If company = Cells(rows, 1).Value Then
+        count = count + 1
+        volume = volume + Cells(rows, 7)
+    Else
+        ' Ticker Name
+        Cells(brands, 10).Value = company
+        ' Number of Entries
+        Cells(brands, 11).Value = count
+        ' Opening price
+        Cells(brands, 12).Value = opening
+        ' Closing Price
+        Cells(brands, 13).Value = Cells(rows - 1, 6)
+        ' Change amount
+        Cells(brands, 14).Value = Cells(brands, 13).Value - Cells(brands, 12).Value
+        ' change percent
+        ' The if loop handles if there would be a divide by zero error
+        If Cells(brands, 12).Value <> 0 Then
+            Cells(brands, 15).Value = Cells(brands, 14).Value / Cells(brands, 12).Value
+        Else
+            Cells(brands, 15).Value = "N/A"
+        End If
+        ' Volume
+        Cells(brands, 16).Value = volume
+        
+        If Cells(brands, 14).Value < 0 Then
+            Cells(brands, 14).Interior.ColorIndex = 3
+        Else
+            If Cells(brands, 14) > 0 Then
+                Cells(brands, 14).Interior.ColorIndex = 4
+            Else
+                Cells(brands, 14).Interior.ColorIndex = 6
+            End If
+                
+        End If
+        
+        opening = Cells(rows, 3)
+        brands = brands + 1
+        company = Cells(rows, 1)
+        count = 1
+        volume = Cells(rows, 7).Value
+    End If
+Wend
+
+
+End Sub
